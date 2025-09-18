@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Heiskell Headlines</title>
+  <meta name="description" content="Breaking, top news, business, and public safety for Hagerstown & Washington County, MD." />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0a0a0a;
+      --muted: #666;
+      --line: #e6e6e6;
+      --accent: #d00;
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 16px 56px; }
+
+    /* Header */
+    header { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 0 14px; border-bottom: 1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:10px; }
+    .brand img { width: 36px; height: 36px; object-fit: contain; }
+    .brand-name { font-weight: 800; font-size: 22px; letter-spacing: 0.2px; }
+    nav a { color: var(--muted); text-decoration: none; margin-left: 14px; font-size: 14px; }
+    nav a:hover { color: var(--text); }
+
+    /* Ticker */
+    .ticker { margin: 16px 0 22px; border: 1px solid var(--line); background: var(--card); border-radius: 10px; overflow: hidden; }
+    .ticker__label { background: var(--accent); color: #fff; padding: 6px 10px; font-weight: 700; font-size: 12px; letter-spacing: .3px; text-transform: uppercase; }
+    .ticker__embed iframe { width: 100%; border: 0; height: 40px; }
+
+    /* Sections stacked vertically */
+    h2 { margin: 0 0 8px; font-size: 18px; }
+    .section { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
+
+    /* Responsive embed wrappers */
+    .embed-wrap { position: relative; width: 100%; padding-top: 120%; }
+    .embed-wrap.twelve { padding-top: 85%; } /* shorter height to show ~12 items depending on widget settings */
+    .embed-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    /* Footer + Contact */
+    footer { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap; }
+    .contact { display:flex; align-items:center; gap:8px; }
+    .contact img { width:18px; height:18px; object-fit:contain; opacity:.85; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; color: var(--text); text-decoration: none; font-size: 13px; }
+    .btn:hover { border-color:#cfcfcf; }
+
+    /* Sponsor (optional) */
+    .sponsor { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display:flex; align-items:center; justify-content:space-between; gap: 10px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <!-- Place your logo file as /logo.png in the same folder as index.html -->
+        <img src="logo.png" alt="Heiskell Headlines logo" />
+        <div class="brand-name">Heiskell Headlines</div>
+      </div>
+      <nav>
+        <a href="#breaking">Breaking</a>
+        <a href="#top">Top News</a>
+        <a href="#business">Business</a>
+        <a href="#safety">Public Safety</a>
+      </nav>
+      <a class="btn" href="mailto:contact@heiskellheadlines.com">
+        <img src="logo.png" alt="" aria-hidden="true" />
+        Contact
+      </a>
+    </header>
+
+    <!-- Breaking News Ticker (kept at the very top) -->
+    <section id="breaking" class="ticker" aria-label="Breaking news live ticker">
+      <div class="ticker__label">Breaking</div>
+      <div class="ticker__embed">
+        <iframe src="https://rss.app/embed/v1/ticker/_RgkbtdR2iMS8pTqH"></iframe>
+      </div>
+    </section>
+
+    <!-- STACKED SECTIONS -->
+    <section id="top" class="section" aria-label="Top News">
+      <h2>Top News</h2>
+      <!-- Use the compact height wrapper to surface ~12 items; actual count is controlled in RSS.app settings. -->
+      <div class="embed-wrap twelve">
+        <iframe src="https://rss.app/embed/v1/wall/_Qr8AZ5AZWh8pYFjR"></iframe>
+      </div>
+    </section>
+
+    <section id="business" class="section" aria-label="Business">
+      <h2>Business</h2>
+      <div class="embed-wrap twelve">
+        <iframe src="https://rss.app/embed/v1/wall/_HSNOEt1hKUNkTPuX"></iframe>
+      </div>
+    </section>
+
+    <section id="safety" class="section" aria-label="Public Safety">
+      <h2>Public Safety</h2>
+      <div class="embed-wrap twelve">
+        <iframe src="https://rss.app/embed/v1/wall/_NurKGt7JgSX6WPeC"></iframe>
+      </div>
+    </section>
+
+    <!-- Optional sponsor block -->
+    <section class="sponsor" aria-label="Sponsor Spotlight">
+      <div>
+        <strong>Sponsor Spotlight</strong>
+        <div style="color:var(--muted); font-size:13px;">Promote your local business or event here.</div>
+      </div>
+      <a class="btn" href="mailto:ads@heiskellheadlines.com">
+        <img src="logo.png" alt="" aria-hidden="true" />
+        Advertise
+      </a>
+    </section>
+
+    <footer>
+      <div class="contact">
+        <img src="logo.png" alt="Heiskell Headlines" />
+        © <span id="y"></span> Heiskell Headlines
+      </div>
+      <a class="btn" href="mailto:contact@heiskellheadlines.com">
+        <img src="logo.png" alt="" aria-hidden="true" />
+        Contact
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+  <noscript>Your browser has JavaScript disabled. RSS widgets will still load via iframes.</noscript>
+</body>
+</html>
