@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Heiskell Headlines</title>
+  <meta name="description" content="Breaking, top news, business, and public safety for Hagerstown & Washington County, MD." />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0a0a0a;
+      --muted: #666;
+      --line: #e6e6e6;
+      --accent: #d00;
+      --card: #ffffff;
+      --header-h: 56px; /* compact sticky header height */
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* Sticky compact header */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      height: var(--header-h);
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+    .site-header .inner {
+      max-width: 1200px; margin: 0 auto; height: 100%;
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+      gap: 12px; padding: 0 16px;
+    }
+    .brand { display:flex; align-items:center; gap:8px; }
+    .brand img { width: 24px; height: 24px; object-fit: contain; }
+    .brand-name { font-weight: 800; font-size: 16px; letter-spacing: .2px; white-space: nowrap; }
+
+    nav.primary { display:flex; align-items:center; gap:18px; justify-content:center; }
+    nav.primary a { color: var(--text); text-decoration:none; font-size: 14px; }
+    nav.primary a:hover { text-decoration: underline; }
+
+    .btn { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border:1px solid var(--line); border-radius:8px; color: var(--text); text-decoration: none; font-size: 13px; }
+    .btn:hover { border-color:#cfcfcf; }
+
+    /* Page wrapper below sticky header */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 16px; padding-top: 18px; }
+
+    /* Ticker */
+    .ticker { margin: 12px 0 18px; border: 1px solid var(--line); background: var(--card); border-radius: 10px; overflow: hidden; }
+    .ticker__label { background: var(--accent); color: #fff; padding: 4px 8px; font-weight: 700; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; }
+    .ticker__embed iframe { width: 100%; border: 0; height: 36px; }
+
+    /* Sections stacked vertically */
+    h2 { margin: 0 0 8px; font-size: 18px; }
+    .section { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
+
+    /* Responsive embed wrappers */
+    .embed-wrap { position: relative; width: 100%; padding-top: 85%; }
+    .embed-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    footer { margin-top: 28px; padding: 12px 0 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .footer-inner { max-width:1200px; margin:0 auto; padding:0 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .foot-brand { display:flex; align-items:center; gap:8px; }
+    .foot-brand img { width:18px; height:18px; object-fit:contain; opacity:.85; }
+  </style>
+</head>
+<body>
+  <!-- Sticky header -->
+  <header class="site-header" role="banner">
+    <div class="inner">
+      <a class="brand" href="#top">
+        <img src="logo.png" alt="Heiskell Headlines logo" />
+        <span class="brand-name">Heiskell Headlines</span>
+      </a>
+      <nav class="primary" aria-label="Primary">
+        <a href="#top">Top News</a>
+        <a href="#business">Business</a>
+        <a href="#safety">Public Safety</a>
+        <a href="#breaking">Breaking</a>
+      </nav>
+      <a class="btn" href="mailto:contact@heiskellheadlines.com">Contact</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <!-- Breaking News Ticker -->
+    <section id="breaking" class="ticker" aria-label="Breaking news live ticker">
+      <div class="ticker__label">Breaking</div>
+      <div class="ticker__embed">
+        <iframe src="https://rss.app/embed/v1/ticker/_RgkbtdR2iMS8pTqH"></iframe>
+      </div></section>
+
+    <!-- Heiskell Headlines Originals (manual posts) -->
+    <section id="originals" class="section" aria-label="Heiskell Headlines Originals">
+      <h2>Heiskell Headlines Originals</h2>
+      <div id="originals-list" class="originals-grid"></div>
+
+      <style>
+        /* Originals grid styled to feel like RSS.app cards */
+        .originals-grid { display:grid; grid-template-columns: 1fr; gap:12px; }
+        @media (min-width: 700px){ .originals-grid { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 1100px){ .originals-grid { grid-template-columns: 1fr 1fr 1fr; } }
+        .orig-card { border:1px solid var(--line); border-radius:12px; background:#fff; overflow:hidden; box-shadow: 0 1px 0 rgba(0,0,0,.02); }
+        .orig-media { aspect-ratio: 16/9; background:#f6f6f6; }
+        .orig-media img { width:100%; height:100%; object-fit:cover; display:block; }
+        .orig-body { padding:10px; }
+        .orig-title { margin:0 0 6px; font-size:16px; font-weight:800; line-height:1.2; }
+        .orig-title a { color: inherit; text-decoration: none; }
+        .orig-title a:hover { text-decoration: underline; }
+        .orig-meta { color:#666; font-size:12px; margin-bottom:6px; }
+        .orig-summary { font-size:14px; color:#222; margin:0; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+      </style>
+
+      <script>
+        async function loadOriginals(){
+          try{
+            const res = await fetch('/data/posts.json', { cache: 'no-store' });
+            const data = await res.json();
+            const posts = (data.posts || [])
+              .filter(p => p.published)
+              .sort((a,b) => new Date(b.published_at||0) - new Date(a.published_at||0))
+              .slice(0, 12);
+
+            const html = posts.map(p => `
+              <article class="orig-card">
+                ${p.image ? `<div class=\"orig-media\"><img src=\"${p.image}\" alt=\"\"></div>` : ''}
+                <div class="orig-body">
+                  <h3 class="orig-title">${p.url ? `<a href=\"${p.url}\" target=\"_blank\" rel=\"noopener\">${p.title}</a>` : p.title}</h3>
+                  <div class="orig-meta">${p.tag || ''}${p.tag && p.author ? ' · ' : ''}${p.author || ''}${(p.published_at? ' · ' + new Date(p.published_at).toLocaleDateString() : '')}</div>
+                  ${p.summary ? `<p class=\"orig-summary\">${p.summary}</p>` : ''}
+                </div>
+              </article>
+            `).join('');
+
+            document.getElementById('originals-list').innerHTML = html || '<div style="color:#666;font-size:14px;">No originals yet. Use /admin to publish.</div>';
+          } catch(e){ console.error(e); }
+        }
+        loadOriginals();
+      </script>
+    </section>
+
+    <!-- STACKED SECTIONS -->
+    <section id="top" class="section" aria-label="Top News">
+      <h2>Top News</h2>
+      <div class="embed-wrap">
+        <iframe src="https://rss.app/embed/v1/wall/_Qr8AZ5AZWh8pYFjR"></iframe>
+      </div>
+    </section>
+
+    <section id="business" class="section" aria-label="Business">
+      <h2>Business</h2>
+      <div class="embed-wrap">
+        <iframe src="https://rss.app/embed/v1/wall/_HSNOEt1hKUNkTPuX"></iframe>
+      </div>
+    </section>
+
+    <section id="safety" class="section" aria-label="Public Safety">
+      <h2>Public Safety</h2>
+      <div class="embed-wrap">
+        <iframe src="https://rss.app/embed/v1/wall/_NurKGt7JgSX6WPeC"></iframe>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="foot-brand">
+        <img src="logo.png" alt="Heiskell Headlines" />
+        © <span id="y"></span> Heiskell Headlines
+      </div>
+      <a class="btn" href="mailto:contact@heiskellheadlines.com">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+  <noscript>Your browser has JavaScript disabled. RSS widgets will still load via iframes.</noscript>
+</body>
+</html>
