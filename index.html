@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,6 +14,7 @@
       --line: #e6e6e6;
       --accent: #d00;
       --card: #ffffff;
+      --header-h: 56px; /* compact sticky header height */
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
@@ -23,62 +25,72 @@
       color: var(--text);
       line-height: 1.4;
     }
-    .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 16px 56px; }
 
-    /* Header */
-    header { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 0 14px; border-bottom: 1px solid var(--line); }
-    .brand { display:flex; align-items:center; gap:10px; }
-    .brand img { width: 36px; height: 36px; object-fit: contain; }
-    .brand-name { font-weight: 800; font-size: 22px; letter-spacing: 0.2px; }
-    nav a { color: var(--muted); text-decoration: none; margin-left: 14px; font-size: 14px; }
-    nav a:hover { color: var(--text); }
+    /* Sticky compact header */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      height: var(--header-h);
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+    .site-header .inner {
+      max-width: 1200px; margin: 0 auto; height: 100%;
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+      gap: 12px; padding: 0 16px;
+    }
+    .brand { display:flex; align-items:center; gap:8px; }
+    .brand img { width: 24px; height: 24px; object-fit: contain; }
+    .brand-name { font-weight: 800; font-size: 16px; letter-spacing: .2px; white-space: nowrap; }
+
+    nav.primary { display:flex; align-items:center; gap:18px; justify-content:center; }
+    nav.primary a { color: var(--text); text-decoration:none; font-size: 14px; }
+    nav.primary a:hover { text-decoration: underline; }
+
+    .btn { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border:1px solid var(--line); border-radius:8px; color: var(--text); text-decoration: none; font-size: 13px; }
+    .btn:hover { border-color:#cfcfcf; }
+
+    /* Page wrapper below sticky header */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 16px; padding-top: 18px; }
 
     /* Ticker */
-    .ticker { margin: 16px 0 22px; border: 1px solid var(--line); background: var(--card); border-radius: 10px; overflow: hidden; }
-    .ticker__label { background: var(--accent); color: #fff; padding: 6px 10px; font-weight: 700; font-size: 12px; letter-spacing: .3px; text-transform: uppercase; }
-    .ticker__embed iframe { width: 100%; border: 0; height: 40px; }
+    .ticker { margin: 12px 0 18px; border: 1px solid var(--line); background: var(--card); border-radius: 10px; overflow: hidden; }
+    .ticker__label { background: var(--accent); color: #fff; padding: 4px 8px; font-weight: 700; font-size: 11px; letter-spacing: .3px; text-transform: uppercase; }
+    .ticker__embed iframe { width: 100%; border: 0; height: 36px; }
 
     /* Sections stacked vertically */
     h2 { margin: 0 0 8px; font-size: 18px; }
     .section { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
 
     /* Responsive embed wrappers */
-    .embed-wrap { position: relative; width: 100%; padding-top: 120%; }
-    .embed-wrap.twelve { padding-top: 85%; } /* shorter height to show ~12 items depending on widget settings */
+    .embed-wrap { position: relative; width: 100%; padding-top: 85%; }
     .embed-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-    /* Footer + Contact */
-    footer { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap; }
-    .contact { display:flex; align-items:center; gap:8px; }
-    .contact img { width:18px; height:18px; object-fit:contain; opacity:.85; }
-    .btn { display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; color: var(--text); text-decoration: none; font-size: 13px; }
-    .btn:hover { border-color:#cfcfcf; }
-
-    /* Sponsor (optional) */
-    .sponsor { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display:flex; align-items:center; justify-content:space-between; gap: 10px; }
+    footer { margin-top: 28px; padding: 12px 0 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .footer-inner { max-width:1200px; margin:0 auto; padding:0 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .foot-brand { display:flex; align-items:center; gap:8px; }
+    .foot-brand img { width:18px; height:18px; object-fit:contain; opacity:.85; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <!-- Place your logo file as /logo.png in the same folder as index.html -->
+  <!-- Sticky header -->
+  <header class="site-header" role="banner">
+    <div class="inner">
+      <a class="brand" href="#top">
         <img src="logo.png" alt="Heiskell Headlines logo" />
-        <div class="brand-name">Heiskell Headlines</div>
-      </div>
-      <nav>
-        <a href="#breaking">Breaking</a>
+        <span class="brand-name">Heiskell Headlines</span>
+      </a>
+      <nav class="primary" aria-label="Primary">
         <a href="#top">Top News</a>
         <a href="#business">Business</a>
         <a href="#safety">Public Safety</a>
+        <a href="#breaking">Breaking</a>
       </nav>
-      <a class="btn" href="mailto:contact@heiskellheadlines.com">
-        <img src="logo.png" alt="" aria-hidden="true" />
-        Contact
-      </a>
-    </header>
+      <a class="btn" href="mailto:contact@heiskellheadlines.com">Contact</a>
+    </div>
+  </header>
 
-    <!-- Breaking News Ticker (kept at the very top) -->
+  <div class="wrap">
+    <!-- Breaking News Ticker -->
     <section id="breaking" class="ticker" aria-label="Breaking news live ticker">
       <div class="ticker__label">Breaking</div>
       <div class="ticker__embed">
@@ -89,49 +101,35 @@
     <!-- STACKED SECTIONS -->
     <section id="top" class="section" aria-label="Top News">
       <h2>Top News</h2>
-      <!-- Use the compact height wrapper to surface ~12 items; actual count is controlled in RSS.app settings. -->
-      <div class="embed-wrap twelve">
+      <div class="embed-wrap">
         <iframe src="https://rss.app/embed/v1/wall/_Qr8AZ5AZWh8pYFjR"></iframe>
       </div>
     </section>
 
     <section id="business" class="section" aria-label="Business">
       <h2>Business</h2>
-      <div class="embed-wrap twelve">
+      <div class="embed-wrap">
         <iframe src="https://rss.app/embed/v1/wall/_HSNOEt1hKUNkTPuX"></iframe>
       </div>
     </section>
 
     <section id="safety" class="section" aria-label="Public Safety">
       <h2>Public Safety</h2>
-      <div class="embed-wrap twelve">
+      <div class="embed-wrap">
         <iframe src="https://rss.app/embed/v1/wall/_NurKGt7JgSX6WPeC"></iframe>
       </div>
     </section>
+  </div>
 
-    <!-- Optional sponsor block -->
-    <section class="sponsor" aria-label="Sponsor Spotlight">
-      <div>
-        <strong>Sponsor Spotlight</strong>
-        <div style="color:var(--muted); font-size:13px;">Promote your local business or event here.</div>
-      </div>
-      <a class="btn" href="mailto:ads@heiskellheadlines.com">
-        <img src="logo.png" alt="" aria-hidden="true" />
-        Advertise
-      </a>
-    </section>
-
-    <footer>
-      <div class="contact">
+  <footer>
+    <div class="footer-inner">
+      <div class="foot-brand">
         <img src="logo.png" alt="Heiskell Headlines" />
         © <span id="y"></span> Heiskell Headlines
       </div>
-      <a class="btn" href="mailto:contact@heiskellheadlines.com">
-        <img src="logo.png" alt="" aria-hidden="true" />
-        Contact
-      </a>
-    </footer>
-  </div>
+      <a class="btn" href="mailto:contact@heiskellheadlines.com">Contact</a>
+    </div>
+  </footer>
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
