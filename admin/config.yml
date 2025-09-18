@@ -1,8 +1,8 @@
 backend:
   name: git-gateway
   branch: main
-  identity_url: https://heiskell.netlify.app/.netlify/identity
-  gateway_url: https://heiskell.netlify.app/.netlify/git
+  identity_url: "https://heiskell.netlify.app/.netlify/identity"
+  gateway_url: "https://heiskell.netlify.app/.netlify/git"
 
 media_folder: "uploads"
 public_folder: "/uploads"
@@ -17,16 +17,24 @@ collections:
         name: "posts_json"
         label: "Heiskell Originals"
         fields:
-          - label: "Posts"
-            name: "posts"
-            widget: "list"
-            summary: "{{fields.title}} — {{fields.tag}}"
-            fields:
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Summary", name: "summary", widget: "text" }
-              - { label: "Image", name: "image", widget: "image", allow_multiple: false }
-              - { label: "URL (optional)", name: "url", widget: "string", required: false }
-              - { label: "Author", name: "author", widget: "string", default: "Staff" }
-              - { label: "Tag", name: "tag", widget: "select", options: ["Top News","Business","Public Safety"], default: "Top News" }
-              - { label: "Published At", name: "published_at", widget: "datetime" }
-              - { label: "Publish?", name: "published", widget: "boolean", default: true }
+          - label: "Title"
+            name: "title"
+            widget: "string"
+          - label: "Summary"
+            name: "summary"
+            widget: "text"
+          - label: "Body"
+            name: "body"
+            widget: "markdown"
+          - label: "Image"
+            name: "image"
+            widget: "image"
+          - label: "Date"
+            name: "date"
+            widget: "datetime"
+          - label: "Author"
+            name: "author"
+            widget: "string"
+          - label: "Tag"
+            name: "tag"
+            widget: "string"
