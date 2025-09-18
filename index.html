@@ -119,6 +119,72 @@
         <iframe src="https://rss.app/embed/v1/wall/_NurKGt7JgSX6WPeC"></iframe>
       </div>
     </section>
+    <section id="originals" class="section" aria-label="Heiskell Headlines Originals">
+  <h2>Heiskell Headlines Originals</h2>
+  <div id="originals-list" class="originals-grid"></div>
+</section>
+
+<style>
+  /* Originals grid styled like your RSS cards */
+  .originals-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 700px) {
+    .originals-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 1100px) {
+    .originals-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .orig-card {
+    border: 1px solid #e6e6e6;
+    border-radius: 12px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 1px 0 rgba(0,0,0,.02);
+  }
+  .orig-media { aspect-ratio: 16/9; background:#f6f6f6; }
+  .orig-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .orig-body { padding: 10px; }
+  .orig-title { margin: 0 0 6px; font-size: 16px; font-weight: 800; line-height: 1.2; }
+  .orig-title a { color: inherit; text-decoration: none; }
+  .orig-title a:hover { text-decoration: underline; }
+  .orig-meta { color: #666; font-size: 12px; margin-bottom: 6px; }
+  .orig-summary { font-size: 14px; color: #222; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+</style>
+
+<script>
+  async function loadOriginals(){
+    try {
+      const res = await fetch('/data/posts.json', { cache: 'no-store' });
+      const data = await res.json();
+      const posts = (data.posts || [])
+        .filter(p => p.published)
+        .sort((a,b) => new Date(b.published_at||0) - new Date(a.published_at||0))
+        .slice(0, 12);
+
+      const html = posts.map(p => `
+        <article class="orig-card">
+          ${p.image ? `<div class="orig-media"><img src="${p.image}" alt=""></div>` : ''}
+          <div class="orig-body">
+            <h3 class="orig-title">${p.url ? `<a href="${p.url}" target="_blank" rel="noopener">${p.title}</a>` : p.title}</h3>
+            <div class="orig-meta">${p.tag || ''}${p.tag && p.author ? ' · ' : ''}${p.author || ''}${(p.published_at? ' · ' + new Date(p.published_at).toLocaleDateString() : '')}</div>
+            ${p.summary ? `<p class="orig-summary">${p.summary}</p>` : ''}
+          </div>
+        </article>
+      `).join('');
+
+      document.getElementById('originals-list').innerHTML =
+        html || '<div style="color:#666;font-size:14px;">No originals yet. Use /admin to publish.</div>';
+    } catch(e) {
+      console.error(e);
+    }
+  }
+  loadOriginals();
+</script>
+
   </div>
 
   <footer>
