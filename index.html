@@ -201,5 +201,33 @@
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
   <noscript>Your browser has JavaScript disabled. RSS widgets will still load via iframes.</noscript>
+    <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+  <noscript>Your browser has JavaScript disabled. RSS widgets will still load via iframes.</noscript>
+
+  <!-- Netlify Identity widget (needed on the root page to accept invites / resets) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    (function () {
+      function goToAdmin() {
+        // Use the Netlify subdomain until custom DNS is ready
+        window.location.href = "https://heiskell.netlify.app/admin/";
+      }
+
+      if (window.netlifyIdentity) {
+        if (location.hash && location.hash.includes("invite_token")) {
+          window.netlifyIdentity.acceptInvite()
+            .then(goToAdmin)
+            .catch(goToAdmin);
+        }
+
+        window.netlifyIdentity.on("login", goToAdmin);
+      }
+    })();
+  </script>
+</body>
+</html>
+
 </body>
 </html>
