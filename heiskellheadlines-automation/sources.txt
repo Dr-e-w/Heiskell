@@ -1,0 +1,4 @@
+# Paste RSS feeds or source URLs here, one per line.
+# The runner will read this file automatically.
+https://rss.app/feeds/dNUNfYut55QeVZcT.xml
+https://rss.app/feeds/Q2jOk32voejRoSc0.xml
