@@ -66,9 +66,9 @@ export async function buildDraftFromSources({
           ]
         }
       ],
-      response_format: {
-        type: "json_schema",
-        json_schema: {
+      text: {
+        format: {
+          type: "json_schema",
           name: "ghost_post_draft",
           strict: true,
           schema: {
