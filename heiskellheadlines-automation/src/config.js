@@ -6,6 +6,7 @@ export function loadConfig(env = process.env) {
   const openAiModel = env.OPENAI_MODEL || "gpt-5.2";
   const sourceFeedUrls = parseList(env.SOURCE_FEED_URLS || "");
   const sourceManifestPath = env.SOURCE_MANIFEST_PATH || "sources.txt";
+  const dryRun = env.DRY_RUN === "true";
 
   return {
     ghostAdminApiUrl,
@@ -14,7 +15,8 @@ export function loadConfig(env = process.env) {
     openAiApiKey,
     openAiModel,
     sourceFeedUrls,
-    sourceManifestPath
+    sourceManifestPath,
+    dryRun
   };
 }
 
