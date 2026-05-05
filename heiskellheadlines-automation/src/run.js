@@ -6,17 +6,38 @@ import fs from "node:fs/promises";
 const slot = resolveSlot(process.argv.slice(2));
 const config = loadConfig();
 
-if (!config.ghostAdminApiUrl || !config.ghostAdminApiKey) {
+if ((!config.ghostAdminApiUrl || !config.ghostAdminApiKey) && !config.dryRun) {
   throw new Error("Set GHOST_ADMIN_API_URL and GHOST_ADMIN_API_KEY before running.");
 }
 
 const sources = await loadSources(config);
+console.log(JSON.stringify({
+  step: "sources_loaded",
+  count: sources.length,
+  slot,
+  dryRun: config.dryRun
+}));
+
 const draft = await buildDraftFromSources({
   slot,
   sources,
   openAiApiKey: config.openAiApiKey,
   openAiModel: config.openAiModel
 });
+
+if (config.dryRun) {
+  console.log(JSON.stringify({
+    ok: true,
+    dryRun: true,
+    slot,
+    title: draft.title,
+    slug: draft.slug,
+    excerpt: draft.excerpt,
+    tags: draft.tags
+  }, null, 2));
+  process.exit(0);
+}
+
 const ghost = createGhostClient({
   adminApiUrl: config.ghostAdminApiUrl,
   adminApiKey: config.ghostAdminApiKey,
@@ -44,13 +65,32 @@ async function loadSources({ sourceFeedUrls, sourceManifestPath }) {
 
   const items = [];
   for (const url of allUrls) {
-    const xml = await fetch(url).then((res) => {
-      if (!res.ok) {
-        throw new Error(`Failed to load source feed ${url}: ${res.status}`);
+    try {
+      const xml = await fetch(url).then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to load source feed ${url}: ${res.status}`);
+        }
+        return res.text();
+      });
+      items.push(...parseRssItems(xml, url));
+    } catch (error) {
+      console.warn(JSON.stringify({
+        step: "source_fetch_failed",
+        url,
+        message: error.message
+      }));
+    }
+  }
+
+  if (items.length === 0) {
+    return [
+      {
+        title: "No source items loaded",
+        summary: "The automation could not load items from the configured source feeds.",
+        url: allUrls[0] || "",
+        publishedAt: null
       }
-      return res.text();
-    });
-    items.push(...parseRssItems(xml, url));
+    ];
   }
 
   return items.slice(0, 12);
