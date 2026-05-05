@@ -12,6 +12,14 @@ on:
           - morning
           - evening
           - manual
+      dry_run:
+        description: "Generate and log draft metadata without creating a Ghost draft"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
   schedule:
     - cron: "0 8 * * *"
     - cron: "0 18 * * *"
@@ -34,6 +42,7 @@ jobs:
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       SOURCE_FEED_URLS: ${{ secrets.SOURCE_FEED_URLS }}
       RUN_SLOT: ${{ github.event_name == 'workflow_dispatch' && inputs.slot || (github.event.schedule == '0 8 * * *' && 'morning' || 'evening') }}
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
