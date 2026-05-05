@@ -1,0 +1,52 @@
+name: Generate Ghost Drafts
+
+on:
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "Run slot"
+        required: true
+        default: "manual"
+        type: choice
+        options:
+          - morning
+          - evening
+          - manual
+  schedule:
+    - cron: "0 8 * * *"
+    - cron: "0 18 * * *"
+
+concurrency:
+  group: heiskellheadlines-drafts
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-draft:
+    runs-on: ubuntu-latest
+    env:
+      GHOST_ADMIN_API_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
+      GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
+      GHOST_ADMIN_API_VERSION: ${{ secrets.GHOST_ADMIN_API_VERSION }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SOURCE_FEED_URLS: ${{ secrets.SOURCE_FEED_URLS }}
+      RUN_SLOT: ${{ github.event_name == 'workflow_dispatch' && inputs.slot || (github.event.schedule == '0 8 * * *' && 'morning' || 'evening') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: heiskellheadlines-automation
+        run: npm install --ignore-scripts
+
+      - name: Run automation
+        working-directory: heiskellheadlines-automation
+        run: npm run run -- --slot "$RUN_SLOT"
