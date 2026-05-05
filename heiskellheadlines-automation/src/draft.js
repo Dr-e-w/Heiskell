@@ -41,7 +41,7 @@ export async function buildDraftFromSources({
           role: "system",
           content: [
             {
-              type: "text",
+              type: "input_text",
               text: [
                 "You write concise local-news drafts for a superlocal outlet.",
                 "Make the copy sound like a real newsroom briefing, not a generic roundup.",
@@ -56,7 +56,7 @@ export async function buildDraftFromSources({
           role: "user",
           content: [
             {
-              type: "text",
+              type: "input_text",
               text: JSON.stringify({
                 date,
                 slot,
@@ -98,7 +98,10 @@ export async function buildDraftFromSources({
   }
 
   const payload = await response.json();
-  const text = payload.output_text || "";
+  const text = getResponseText(payload);
+  if (!text) {
+    throw new Error(`OpenAI response did not include output text: ${JSON.stringify(payload)}`);
+  }
   const draft = JSON.parse(text);
   return {
     ...draft,
@@ -111,6 +114,23 @@ export async function buildDraftFromSources({
     }),
     tags: Array.from(new Set([...(draft.tags || []), "Hagerstown", "Maryland", "Briefing", slot]))
   };
+}
+
+function getResponseText(payload) {
+  if (payload.output_text) {
+    return payload.output_text;
+  }
+
+  const output = payload.output || [];
+  for (const item of output) {
+    for (const content of item.content || []) {
+      if (content.type === "output_text" && content.text) {
+        return content.text;
+      }
+    }
+  }
+
+  return "";
 }
 
 function escapeHtml(value) {
