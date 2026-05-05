@@ -1,0 +1,12 @@
+{
+  "name": "heiskellheadlines-automation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "run": "node src/run.js",
+    "check": "node --check src/run.js",
+    "cron:morning": "node src/run.js --slot morning",
+    "cron:evening": "node src/run.js --slot evening"
+  }
+}
